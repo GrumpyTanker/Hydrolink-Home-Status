@@ -1,0 +1,32 @@
+hydrolink_status:
+  module: hydrolink
+  class: HydroLinkStatus
+  email: your_email@example.com
+  password: your_password
+  device_name: "EcoWater Softener"
+  whitelist:
+    - avg_daily_use_gals
+    - avg_days_between_regens
+    - avg_salt_per_regen_lbs
+    - backwash_secs
+    - capacity_remaining_percent
+    - current_valve_position_enum
+    - current_water_flow_gpm
+    - daily_avg_rock_removed_lbs
+    - days_in_operation
+    - days_since_last_regen
+    - days_since_last_time_loss
+    - depletion_alert
+    - error_code_alert
+    - error_code
+    - excessive_water_use_alert
+    - floor_leak_detector_alert
+    - flow_monitor_alert
+    - gallons_used_today
+    - low_salt_alert
+    - manual_regens
+    - max_days_between_regens
+    - peak_water_flow_gpm
+    - power_outage_count
+    - average_exhaustion_percent
+  poll_interval: 300
