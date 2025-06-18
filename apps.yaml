@@ -1,32 +1,130 @@
 hydrolink_status:
   module: hydrolink
   class: HydroLinkStatus
-  email: your_email@example.com
-  password: your_password
+  email: your-email@example.com
+  password: your_password_here
   device_name: "EcoWater Softener"
+
   whitelist:
+    - average_exhaustion_percent
     - avg_daily_use_gals
     - avg_days_between_regens
     - avg_salt_per_regen_lbs
     - backwash_secs
+    # - base_software_version
+    # - build_date_code
+    # - build_day
+    # - build_fixture
+    # - build_sequence_number
+    # - build_year
     - capacity_remaining_percent
+    # - chem_feed_gals
+    # - chem_feed_tenths_secs
+    # - current_cam_speed_secs
+    # - current_time_secs
     - current_valve_position_enum
     - current_water_flow_gpm
     - daily_avg_rock_removed_lbs
+    # - date_format_enum
     - days_in_operation
     - days_since_last_regen
     - days_since_last_time_loss
     - depletion_alert
-    - error_code_alert
+    # - draw_secs
+    # - efficiency_mode_enum
+    # - error_1_count
+    # - error_3_count
+    # - error_4_count
+    # - error_5_count
     - error_code
+    - error_code_alert
+    # - esp_software_part_number
     - excessive_water_use_alert
+    # - fast_rinse_secs
+    # - feature_97pct_enum
+    # - fill_secs
     - floor_leak_detector_alert
     - flow_monitor_alert
+    # - flow_monitor_min_rate_gpm
+    # - flow_monitor_trip_sec
     - gallons_used_today
+    # - hardness_grains
+    # - hardness_unit_enum
+    # - iron_level_tenths_ppm
+    # - language_enum
+    # - longest_rec_outage_mins
     - low_salt_alert
+    # - low_salt_trip_level_days
     - manual_regens
     - max_days_between_regens
+    # - model_description
+    # - model_display_code
+    # - model_id
+    # - nickname
+    # - operating_capacity_grains
+    # - out_of_salt_estimate_days
     - peak_water_flow_gpm
     - power_outage_count
-    - average_exhaustion_percent
-  poll_interval: 300
+    # - product_serial_number
+    # - program_code
+    # - puck1_nick_name
+    # - puck1_status
+    # - puck2_nick_name
+    # - puck2_status
+    # - puck3_nick_name
+    # - puck3_status
+    # - puck4_nick_name
+    # - puck4_status
+    # - puck5_nick_name
+    # - puck5_status
+    # - pwa_number
+    # - regen_enable_enum
+    # - regen_status_enum
+    # - regen_time_rem_secs
+    # - regen_time_secs
+    # - requested_valve_pos_enum
+    # - rf_signal_bars
+    # - rf_signal_strength_dbm
+    # - rinse_type_enum
+    # - rock_removed_since_rech_lbs
+    # - sales_channel
+    # - salt_effic_grains_per_lb
+    # - salt_level_tenths
+    # - salt_sensor_auto_enum
+    # - salt_type_enum
+    # - second_backwash_cycles
+    # - second_backwash_secs
+    # - service_active
+    # - service_reminder_alert
+    # - service_reminder_months
+    # - start_cam_speed_secs
+    # - system_type
+    # - time_format_enum
+    # - time_lost_events
+    # - tlc_avg_temp_tenths_c
+    # - tlc_tds_ppm
+    # - tlc_temp_tenths_c
+    # - top_level_part_number
+    # - total_outlet_water_gals
+    # - total_regens
+    # - total_rock_removed_lbs
+    # - total_salt_use_lbs
+    # - total_untreated_water_gals
+    # - treated_water_avail_gals
+    # - tz_dev
+    # - tz_id
+    # - user_lockout_enum
+    # - valve_motor_state_enum
+    # - valve_pos_switch_enum
+    # - valve_pos_time_left_secs
+    # - valve_reindex_count
+    # - volume_unit_enum
+    # - water_counter_gals
+    # - weight_unit_enum
+    # - wifi_ssid
+    # - wtd_alert
+    # - wtd_cloud_rate_mins
+    # - wtd_false_count
+    # - wtd_monitor_enum
+
+  poll_interval: 300  # seconds between updates (adjust as needed)
