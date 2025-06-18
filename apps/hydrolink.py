@@ -10,6 +10,8 @@ class HydroLinkStatus(hass.Hass):
         self.whitelist = set(self.args.get("whitelist", []))
         self.device_name = self.args.get("device_name", "HydroLink Water Softener")
         self.auth_cookie = None
+
+        # Map some known keys to units
         self.unit_map = {
             "avg_daily_use_gals": "gallons",
             "avg_salt_per_regen_lbs": "lbs",
@@ -18,10 +20,12 @@ class HydroLinkStatus(hass.Hass):
             "daily_avg_rock_removed_lbs": "lbs",
             "gallons_used_today": "gallons",
             "peak_water_flow_gpm": "gpm",
-            # Add more units as you want here...
         }
-        self.run_every(self.poll, self.datetime() + datetime.timedelta(seconds=5), self.args.get("poll_interval", 300))
-        self.log_all_keys_logged = False  # To log keys only once per restart
+
+        # schedule polling (start 5 sec after init)
+        start = self.datetime() + datetime.timedelta(seconds=5)
+        interval = self.args.get("poll_interval", 300)
+        self.run_every(self.poll, start, interval)
 
     def login(self):
         try:
@@ -41,11 +45,13 @@ class HydroLinkStatus(hass.Hass):
         return False
 
     def poll(self, kwargs):
+        # ensure we have a valid cookie
         if not self.auth_cookie:
             if not self.login():
                 self.log("Login failed, will retry on next poll")
                 return
 
+        # fetch device list
         try:
             r = requests.get(
                 "https://api.hydrolinkhome.com/v1/devices?all=false&per_page=200",
@@ -55,22 +61,17 @@ class HydroLinkStatus(hass.Hass):
             r.raise_for_status()
         except requests.RequestException as e:
             self.log(f"HTTP request failed: {e}")
-            self.auth_cookie = None
+            self.auth_cookie = None  # force re-login next time
             return
 
-        data = r.json().get("data", [])
-
-        all_keys = set()
-
-        for dev in data:
+        devices = r.json().get("data", [])
+        for dev in devices:
             props = dev.get("properties") or {}
             if not isinstance(props, dict):
                 self.error(f"`properties` is not dict! Got: {repr(props)}")
                 continue
 
-            # Collect all property keys
-            all_keys.update(props.keys())
-
+            # filter & extract only whitelisted keys
             prop_map = {
                 name: info["value"]
                 for name, info in props.items()
@@ -78,23 +79,20 @@ class HydroLinkStatus(hass.Hass):
             }
 
             for key, val in prop_map.items():
+                # apply any special conversions
+                if key == "capacity_remaining_percent":
+                    # Hydrolink returns tenths of percent (e.g. 777 → 77.7%)
+                    val = round(val / 10.0, 1)
+
                 entity_id = f"sensor.hydrolink_{key}"
                 friendly = self.friendly_name(key)
                 attributes = {"friendly_name": f"{self.device_name} {friendly}"}
                 if key in self.unit_map:
                     attributes["unit_of_measurement"] = self.unit_map[key]
 
-                self.set_state(
-                    entity_id,
-                    state=val,
-                    attributes=attributes,
-                )
-
-        # Log all keys once after startup to help updating whitelist
-        if not self.log_all_keys_logged:
-            sorted_keys = sorted(all_keys)
-            self.log(f"Available property keys from Hydrolink API:\n" + "\n".join(sorted_keys))
-            self.log_all_keys_logged = True
+                # update HA state
+                self.set_state(entity_id, state=val, attributes=attributes)
 
     def friendly_name(self, key):
+        # snake_case → Title Case
         return key.replace("_", " ").title()
