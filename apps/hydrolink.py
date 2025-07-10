@@ -66,6 +66,9 @@ class HydroLinkStatus(hass.Hass):
 
         devices = r.json().get("data", [])
         for dev in devices:
+            if dev.get("system_type") != "demand_softener":
+                continue
+            
             props = dev.get("properties") or {}
             if not isinstance(props, dict):
                 self.error(f"`properties` is not dict! Got: {repr(props)}")
