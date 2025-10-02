@@ -1,3 +1,13 @@
+# ⚠️ This AppDaemon Plugin is Deprecated ⚠️
+
+**This project is no longer actively maintained. Please use the new and improved HACS integration instead.**
+
+The new integration offers better performance, easier configuration through the Home Assistant UI, and more robust features.
+
+➡️ **[Go to the new Ecowater-Hydrolink-HACS repository](https://github.com/GrumpyTanker/Ecowater-Hydrolink-HACS)**
+
+---
+
 # HydroLinkStatus AppDaemon Plugin
 
 A simple AppDaemon 4 script to integrate your EcoWater HydroLink water softener with Home Assistant.
